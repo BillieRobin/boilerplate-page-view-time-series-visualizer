@@ -26,6 +26,39 @@ def draw_line_plot():
     return fig
 
 def draw_bar_plot():
+    # Copy and modify data
+    df_bar = df.copy()
+    df_bar["Years"] = df_bar.index.year
+    df_bar["Months"] = df_bar.index.month_name()
+    
+    # Add missing months with 0 values
+    missing = pd.DataFrame({
+        "Years": [2016]*4,
+        "Months": ['January', 'February', 'March', 'April'],
+        "value": [0]*4
+    })
+    df_bar = pd.concat([missing, df_bar])
+
+    # Convert Months to categorical with proper order
+    month_order = ['January', 'February', 'March', 'April', 'May', 'June',
+                   'July', 'August', 'September', 'October', 'November', 'December']
+    df_bar['Months'] = pd.Categorical(df_bar['Months'], categories=month_order, ordered=True)
+
+    # Group and plot
+    df_group = df_bar.groupby(['Years', 'Months'])['value'].mean().unstack()
+    
+    fig = df_group.plot(kind='bar', figsize=(12, 6))
+    plt.title("Average Daily Page Views per Month")
+    plt.xlabel("Years")
+    plt.ylabel("Average Page Views")
+    plt.legend(title="Months", bbox_to_anchor=(1.05, 1), loc='upper left')
+
+    fig.savefig('bar_plot.png')
+    return fig
+
+
+"""
+def draw_bar_plot():
     # Prepare data for bar plot
     df_bar = df.copy()
     df_bar['year'] = df_bar.index.year
@@ -44,7 +77,7 @@ def draw_bar_plot():
     # Save image and return figure
     fig.savefig('bar_plot.png')
     return fig
-
+"""
 
 def draw_box_plot():
     # Prepare data for box plots
