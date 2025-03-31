@@ -46,6 +46,25 @@ def draw_bar_plot():
     return fig
 
 def draw_box_plot():
+    # Prepare data (keep existing code)
+    df_box = df.copy()
+    df_box.reset_index(inplace=True)
+    df_box['year'] = [d.year for d in df_box.date].astype(int)  # Ensure integer type
+    df_box['month'] = [d.strftime('%b') for d in df_box.date]
+    df_box['value'] = pd.to_numeric(df_box['value'])  # Ensure numeric type
+
+    # Modify boxplot calls
+    fig, axes = plt.subplots(1, 2, figsize=(32, 10), dpi=100)
+    
+    # Yearly boxplot
+    sns.boxplot(x="year", y="value", data=df_box, ax=axes[0])
+    
+    # Monthly boxplot
+    month_order = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+                   "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+    sns.boxplot(x="month", y="value", data=df_box, order=month_order, ax=axes[1])
+"""
+def draw_box_plot():
     # Prepare data for box plots
     df_box = df.copy()
     df_box.reset_index(inplace=True)
@@ -67,7 +86,9 @@ def draw_box_plot():
     axes[1].set_title("Month-wise Box Plot (Seasonality)")
     axes[1].set_xlabel("Month")
     axes[1].set_ylabel("Page Views")
-    
+    """
+
+
     # Save image and return figure
     fig.savefig('box_plot.png')
     return fig
