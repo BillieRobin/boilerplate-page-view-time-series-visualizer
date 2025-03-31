@@ -63,6 +63,12 @@ def draw_box_plot():
     month_order = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", 
                    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
     sns.boxplot(x="month", y="value", data=df_box, order=month_order, ax=axes[1])
+
+
+  # Save image and return figure
+    fig.savefig('box_plot.png')
+    return fig
+
 """
 def draw_box_plot():
     # Prepare data for box plots
@@ -89,10 +95,7 @@ def draw_box_plot():
     """
 
 
-    # Save image and return figure
-    fig.savefig('box_plot.png')
-    return fig
-
+  
 
 
 
